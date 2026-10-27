@@ -150,6 +150,13 @@ class TimesheetDetailView(APIView):
         else:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
 
+        # Invoice lines snapshot the entry, so a billed entry must not drift from its invoice.
+        if hasattr(entry, 'invoice_line'):
+            return Response(
+                {'detail': 'This entry has been invoiced and can no longer be changed.'},
+                status=status.HTTP_409_CONFLICT,
+            )
+
         new_status = request.data.get('status')
         rejection_reason = request.data.get('rejection_reason')
 
