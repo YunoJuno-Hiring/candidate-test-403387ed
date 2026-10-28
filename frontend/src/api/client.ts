@@ -38,7 +38,7 @@ export interface TimesheetEntry {
 }
 
 export interface BillingRunResult {
-  run_id: string
+  run_id: number
   invoices_generated: number
   status: string
 }
